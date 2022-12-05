@@ -15,3 +15,13 @@ code {
 .App {
   text-align: center;
 }
+
+@font-face {
+  font-family: 'Leawood';
+  src: url( './fonts/LeawoodStd-Book.otf') format('truetype');
+}
+
+.logo {
+  font-family: 'Leawood';
+}
+
