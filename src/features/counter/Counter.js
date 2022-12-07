@@ -12,6 +12,7 @@ import styles from './Counter.module.css';
 
 export function Counter() {
   const count = useSelector(selectCount);
+  // Gives access to the store's dispatch method
   const dispatch = useDispatch();
   const [incrementAmount, setIncrementAmount] = useState('2');
 

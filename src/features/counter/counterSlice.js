@@ -19,7 +19,7 @@ export const incrementAsync = createAsyncThunk(
     return response.data;
   }
 );
-
+// createSlice generates action type strings
 export const counterSlice = createSlice({
   name: 'counter',
   initialState,
