@@ -1,22 +1,18 @@
 import { React,useState,useEffect } from 'react';
-import { Counter } from './features/counter/Counter';
 import WeatherInput from './components/WeatherInput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloudBolt } from '@fortawesome/free-solid-svg-icons';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { useDispatch } from 'react-redux';
-import {
-  latLongAsync
-} from './features/weather/weatherSlice.js';
-
+import { latLongAsync, cityAsync } from './features/weather/weatherSlice.js';
+import WeatherContainer from './features/weather/WeatherContainer';
 function App() {
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
   const [city, setCity] = useState('');
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log(process.env);
     navigator.geolocation.getCurrentPosition((position) => {
       setLatitude(position.coords.latitude);
       setLongitude(position.coords.longitude);
@@ -40,19 +36,20 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Counter />
-        <h1 className="logo text-4xl">timely <FontAwesomeIcon icon={faCloudBolt} color="#20BEE1" /> weather</h1>
+        <h1 className="logo text-6xl">timely <FontAwesomeIcon icon={faCloudBolt} color="#20BEE1" /> weather</h1>
       </header>
+      <WeatherContainer />
       <div className="flex justify-center weather-input-container">
-        {/* <WeatherInput label="Latitude"/>
-        <WeatherInput label="Longitude"/> */}
         <TextField size="small" id="outlined-basic" label="Latitude" value={latitude} onChange={handleLatitudeChange} variant="outlined"/>
         <TextField size="small" id="outlined-basic" label="Longitude" value={longitude} onChange={handleLongitudeChange} variant="outlined"/>
-        <Button variant="contained">Search by Latitude+Longitude</Button>
+        <Button variant="contained" onClick={() => {dispatch(latLongAsync({
+            latitude: latitude,
+            longitude: longitude
+          })); setCity('')}
+        }>Search by Latitude+Longitude</Button>
         <span className="text-3xl ml-4">-OR-</span>
-        {/* <WeatherInput label="City"/> */}
         <TextField size="small" id="outlined-basic" label="City" value={city} onChange={handleCityChange} variant="outlined"/>
-        <Button variant="contained">Search by City</Button>
+        <Button variant="contained" onClick={() => {dispatch(cityAsync(city)); setLatitude(''); setLongitude('')}}>Search by City</Button>
       </div>
     </div>
   );

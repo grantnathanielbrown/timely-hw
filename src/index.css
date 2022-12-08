@@ -32,3 +32,14 @@ code {
 .weather-input-container *  {
   margin-right: .5em;
 }
+
+.weather-container {
+  width: 50em;
+  height: 30em;
+  border: 5px solid #20BEE1;
+  margin: 2em auto;
+}
+
+.city-image {
+  max-height: 28em;
+}
