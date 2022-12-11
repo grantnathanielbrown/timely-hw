@@ -41,5 +41,9 @@ code {
 }
 
 .city-image {
-  max-height: 28em;
+  max-height: 24em;
+}
+
+#save-button {
+  color: white;
 }

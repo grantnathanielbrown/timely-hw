@@ -3,9 +3,21 @@ import { useSelector } from 'react-redux';
 import { selectWeather } from './weatherSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTemperatureThreeQuarters, faDroplet, faWind, faCloudRain } from '@fortawesome/free-solid-svg-icons';
-export default function WeatherContainer() {
+import Button from '@mui/material/Button';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#20BEE1",
+      },
+
+    },
+  });
+
+export default function WeatherContainer(props) {
     const weather = useSelector(selectWeather);
-    // console.log(weather);
+    console.log(weather);
     let content;
     if (weather.status === "loading") {
         content = <h2 className="text-4xl">Loading... / Waiting for Search</h2>
@@ -30,9 +42,12 @@ export default function WeatherContainer() {
                 </div>
             </div>
 
-            <div className="flex flex-col h-full w-full">
+            <div className="flex flex-col justify-between h-full w-full">
                 {/* This website will provide images associated with whatever city is searched by the user. It will occasionally fail to find anything, which I feel is an acceptable tradeoff */}
                 <img className="rounded-lg city-image" src={`https://source.unsplash.com/featured/?${weather.name}`}></img>
+                <ThemeProvider theme={theme}>
+                    <Button id="save-button" variant="contained" color="primary" onClick={() => props.savePreferredLocation(weather.coord.lat,weather.coord.lon)}>Save as Preferred Location</Button>
+                </ThemeProvider>
             </div>
         </div>
     }

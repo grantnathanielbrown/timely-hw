@@ -14,17 +14,31 @@ function App() {
   const [city, setCity] = useState('');
   const dispatch = useDispatch();
   useEffect(() => {
-    // On page load populate the longitude/latitude inputs and make a request to OpenWeather
-    navigator.geolocation.getCurrentPosition((position) => {
-      setLatitude(position.coords.latitude.toString());
-      setLongitude(position.coords.longitude.toString());
+    const preferredLatitude = localStorage.getItem("preferredLatitude");
+    const preferredLongitude = localStorage.getItem("preferredLongitude");
+    // If user has already stored a location as their preferred one, don't bother querying the navigator API. Otherwise...
+    if (preferredLatitude && preferredLongitude) {
+      setLatitude(preferredLatitude.toString());
+      setLongitude(preferredLongitude.toString());
       dispatch(latLongAsync({
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude
+        latitude: preferredLatitude,
+        longitude: preferredLongitude
       }));
-    },(error) => {
-      console.log(error);
-    });
+    } else {
+      // On page load populate the longitude/latitude inputs and make a request to OpenWeather
+      navigator.geolocation.getCurrentPosition((position) => {
+        setLatitude(position.coords.latitude.toString());
+        setLongitude(position.coords.longitude.toString());
+        dispatch(latLongAsync({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        }));
+      },(error) => {
+        console.log(error);
+      });
+    }
+
+
   },[])
   const handleLatitudeChange = (event) => {
     setLatitude(event.target.value);
@@ -35,12 +49,16 @@ function App() {
   const handleCityChange = (event) => {
     setCity(event.target.value);
   };
+  const savePreferredLocation = (latitude,longitude) => {
+    localStorage.setItem("preferredLatitude",latitude);
+    localStorage.setItem("preferredLongitude",longitude);
+  }
   return (
     <div className="App">
       <header className="App-header">
         <h1 className="logo text-6xl">timely <FontAwesomeIcon icon={faCloudBolt} color="#20BEE1" /> weather</h1>
       </header>
-      <WeatherContainer />
+      <WeatherContainer savePreferredLocation={savePreferredLocation} />
       <div className="flex justify-center weather-input-container">
         {/*  type="number" is sufficient for input validation (technically latitude and longitude have fixed ranges but we aren't going to worry about that) */}
         <TextField size="small" id="outlined-basic" type="number" label="Latitude" value={latitude} onChange={handleLatitudeChange} variant="outlined"/>
