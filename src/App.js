@@ -14,8 +14,8 @@ function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
-      setLatitude(position.coords.latitude);
-      setLongitude(position.coords.longitude);
+      setLatitude(position.coords.latitude.toString());
+      setLongitude(position.coords.longitude.toString());
       dispatch(latLongAsync({
         latitude: position.coords.latitude,
         longitude: position.coords.longitude
@@ -40,16 +40,16 @@ function App() {
       </header>
       <WeatherContainer />
       <div className="flex justify-center weather-input-container">
-        <TextField size="small" id="outlined-basic" label="Latitude" value={latitude} onChange={handleLatitudeChange} variant="outlined"/>
-        <TextField size="small" id="outlined-basic" label="Longitude" value={longitude} onChange={handleLongitudeChange} variant="outlined"/>
-        <Button variant="contained" onClick={() => {dispatch(latLongAsync({
+        <TextField size="small" id="outlined-basic" type="number" label="Latitude" value={latitude} onChange={handleLatitudeChange} variant="outlined"/>
+        <TextField size="small" id="outlined-basic" type="number" label="Longitude" value={longitude} onChange={handleLongitudeChange} variant="outlined"/>
+        <Button variant="contained" disabled={!latitude.length || !longitude.length} onClick={() => {dispatch(latLongAsync({
             latitude: latitude,
             longitude: longitude
           })); setCity('')}
         }>Search by Latitude+Longitude</Button>
         <span className="text-3xl ml-4">-OR-</span>
-        <TextField size="small" id="outlined-basic" label="City" value={city} onChange={handleCityChange} variant="outlined"/>
-        <Button variant="contained" onClick={() => {dispatch(cityAsync(city)); setLatitude(''); setLongitude('')}}>Search by City</Button>
+        <TextField size="small" id="outlined-basic" label="City" value={city} onChange={handleCityChange} variant="outlined" />
+        <Button variant="contained" disabled={!city.length} onClick={() => {dispatch(cityAsync(city)); setLatitude(''); setLongitude('')}}>Search by City</Button>
       </div>
     </div>
   );
