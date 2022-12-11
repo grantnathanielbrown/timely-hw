@@ -1,5 +1,4 @@
 import { React,useState,useEffect } from 'react';
-import WeatherInput from './components/WeatherInput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCloudBolt } from '@fortawesome/free-solid-svg-icons';
 import Button from '@mui/material/Button';
